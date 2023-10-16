@@ -17,21 +17,6 @@ export const creatUser = async (req, res) => {
       profilePicture,
       isAdmin,
     } = req.body;
-    if (
-      (!firstName,
-      !lastName,
-      !userName,
-      !userEmail,
-      !password,
-      !address,
-      !phone,
-      !profilePicture,
-      !isAdmin)
-    ) {
-      return res
-        .status(400)
-        .send({ message: "Please enter all fields", success: false });
-    }
 
     const userExist = await User.findOne({ userEmail });
     if (userExist) {

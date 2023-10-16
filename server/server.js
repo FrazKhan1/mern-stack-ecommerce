@@ -3,7 +3,7 @@ import express from "express";
 import dbConfig from "./config/dbConfig.js";
 import userRoute from "./routes/userRoute.js";
 import productRoute from "./routes/productRoute.js";
-import cartRoute from "../routes/cartRoute.js";
+import cartRoute from "./routes/cartRoute.js";
 import orderRoute from "./routes/orderRoute.js";
 
 const app = express();

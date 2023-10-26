@@ -1,6 +1,7 @@
 import React from "react";
 import { Tabs } from "antd";
 import AddProduct from "./addProduct";
+import ProductList from "./productList";
 
 const ProductData = () => {
   const items = [
@@ -12,7 +13,7 @@ const ProductData = () => {
     {
       key: "2",
       label: "Products",
-      children: "2",
+      children: <ProductList />,
     },
   ];
   return (

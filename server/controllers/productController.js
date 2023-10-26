@@ -34,33 +34,35 @@ export const getAllProduct = async (req, res) => {
     });
   }
 };
+// Get Single Product
+export const getSingleProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const response = await Product.findById(productId);
+    if (!response) {
+      return res.status(404).send({
+        message: "Product  not found",
+        success: false,
+      });
+    }
+    res.status(200).send({
+      message: "Product Data fetch Succesfully",
+      success: true,
+      data: response,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+};
 // Update Products
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      productTitle,
-      productDescription,
-      productPrice,
-      productCategory,
-      productBrand,
-      productInventory,
-      productRating,
-    } = req.body;
 
-    const response = await Product.findByIdAndUpdate(
-      id,
-      {
-        productTitle,
-        productDescription,
-        productPrice,
-        productCategory,
-        productBrand,
-        productInventory,
-        productRating,
-      },
-      { new: true }
-    );
+    const response = await Product.findByIdAndUpdate(id, req.body);
 
     res.status(200).send({
       message: "Product Data Updated Successfully",

@@ -13,6 +13,8 @@ import ForgetPassword from "./Pages/User/forgetPassword";
 import AdminDashboard from "./Pages/Admin/adminDashboard";
 import AdminRoute from "./components/AdminRoute";
 import SingleUserScreen from "./Pages/Admin/singleUserScreen";
+import SingleProductScreen from "./Pages/Admin/singleProductScreen";
+import UpdateSingleProduct from "./Pages/Admin/updateSingleProduct";
 
 const App = () => {
   const { loading } = useSelector((state) => state.loader);
@@ -91,6 +93,22 @@ const App = () => {
             element={
               <AdminRoute>
                 <SingleUserScreen />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/product/:id"
+            element={
+              <AdminRoute>
+                <SingleProductScreen />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/product/edit/:id"
+            element={
+              <AdminRoute>
+                <UpdateSingleProduct />
               </AdminRoute>
             }
           />

@@ -3,6 +3,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { GrFormView } from "react-icons/gr";
+import { MdOutlineDeleteSweep } from "react-icons/md";
 
 const UserData = () => {
   const [users, setUsers] = useState([]);
@@ -71,21 +73,21 @@ const UserData = () => {
       title: "Action",
       key: "action",
       render: (text, record) => (
-        <div className="flex ">
+        <div className="flex gap-3 ">
           <div
             onClick={() => handleView(record._id)}
-            className=" bg-primary text-white text-center border rounded w-28  cursor-pointer"
+            className="  text-center   cursor-pointer"
           >
             <span className=" h-[30px] flex items-center justify-center rounded">
-              View User
+              <GrFormView size={24} />
             </span>
           </div>
           <div
             onClick={() => handleDelete(record._id)}
-            className=" bg-primary text-white text-center border rounded w-28   cursor-pointer"
+            className="  text-center   cursor-pointer"
           >
             <span className=" h-[30px] flex items-center justify-center rounded">
-              Delete User
+              <MdOutlineDeleteSweep size={24} />
             </span>
           </div>
         </div>

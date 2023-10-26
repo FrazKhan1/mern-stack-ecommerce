@@ -8,7 +8,6 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 const Home = () => {
-  const { products } = useSelector((state) => state.products);
   const [productlist, setProductList] = useState([]);
   console.log(productlist);
   const getData = async () => {

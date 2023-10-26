@@ -3,17 +3,26 @@ import Wrapper from "../../components/Wrapper";
 import { Button, Form, Input } from "antd";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { hideLoading, showLoading } from "../../redux/loaderSlice";
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onFinish = async (data) => {
     try {
+      dispatch(showLoading());
       const response = await axios.post("/api/user/create-user", data);
+      dispatch(hideLoading());
       if (response.data.success) {
         toast.success(response.data.message);
+        navigate("/login");
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
+      dispatch(hideLoading());
       console.log(error);
     }
   };
@@ -121,6 +130,14 @@ const Register = () => {
               </Form.Item>
             </div>
           </Form>
+          <div>
+            <p className="text-gray-600 mt-6">
+              Already have an account?{" "}
+              <Link className="hover:underline text-primary" to="/login">
+                Login In
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </Wrapper>

@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Wrapper from "./Wrapper";
+import { useDispatch, useSelector } from "react-redux";
+import { FiUser } from "react-icons/fi";
+import { setUser } from "../redux/userSlice";
 
 const Navbar = () => {
+  const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
 
   const navLinks = [
     {
-      link: "home",
+      link: "/",
       title: "Home",
     },
-    {
-      link: "/login",
-      title: "Login",
-    },
+
     {
       link: "product",
       title: "Product",
@@ -24,7 +27,11 @@ const Navbar = () => {
       title: "Shop",
     },
   ];
-
+  const logOut = () => {
+    localStorage.clear();
+    navigate("/login");
+    dispatch(setUser(null));
+  };
   return (
     <Wrapper bgColor="primary">
       <nav className="w-full bg-primary flex py-6 justify-between items-center navbar">
@@ -33,15 +40,36 @@ const Navbar = () => {
         <ul className="list-none sm:flex hidden justify-end items-center flex-1">
           {navLinks.map((nav, index) => (
             <li
-              key={nav.link}
-              className={`font-poppins font-normal cursor-pointer text-[16px] ${
-                active === nav.title ? "text-white" : "text-dimWhite"
+              key={index}
+              className={`font-poppins font-normal cursor-pointer text-[16px] text-white
               } ${index === navLinks.length - 1 ? "mr-0" : "mr-10"}`}
               onClick={() => setActive(nav.title)}
             >
               <Link to={nav.link}>{nav.title}</Link>
             </li>
           ))}
+          {user ? (
+            <li
+              className="font-poppins font-normal cursor-pointer text-[16px] text-white ml-10
+              "
+            >
+              <span onClick={logOut}>Logout</span>
+            </li>
+          ) : (
+            <li
+              className="font-poppins font-normal cursor-pointer text-[16px] text-white ml-10
+              "
+            >
+              <Link to="/login">Login</Link>
+            </li>
+          )}
+          {user && (
+            <Link to={user?.isAdmin ? "/admin-dashboard" : "user-profile"}>
+              <li className="flex text-white items-center justify-center ml-5 gap-2">
+                <FiUser size={24} /> {user?.userName}
+              </li>
+            </Link>
+          )}
         </ul>
 
         {/* Mobile Navigation */}
@@ -68,7 +96,7 @@ const Navbar = () => {
                   } ${index === navLinks.length - 1 ? "mb-0" : "mb-4"}`}
                   onClick={() => setActive(nav.title)}
                 >
-                  <a href={`#${nav.id}`}>{nav.title}</a>
+                  <Link href={`#${nav.id}`}>{nav.title}</Link>
                 </li>
               ))}
             </ul>

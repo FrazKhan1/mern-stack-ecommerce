@@ -1,31 +1,8 @@
 import Product from "../models/productModel.js";
 
-// New User
+// New Product
 export const createProduct = async (req, res) => {
   try {
-    const {
-      productTitle,
-      productDescription,
-      productPrice,
-      productCategory,
-      productBrand,
-      productInventory,
-      productRating,
-    } = req.body;
-    if (
-      (!productTitle,
-      !productDescription,
-      !productPrice,
-      !productCategory,
-      !productBrand,
-      !productInventory,
-      !productRating)
-    ) {
-      return res
-        .status(400)
-        .send({ message: "Please enter all fields", success: false });
-    }
-
     const newProduct = new Product(req.body);
 
     await newProduct.save();
@@ -41,7 +18,7 @@ export const createProduct = async (req, res) => {
     });
   }
 };
-// Get All User
+// Get All Products
 export const getAllProduct = async (req, res) => {
   try {
     const response = await Product.find();
@@ -57,7 +34,7 @@ export const getAllProduct = async (req, res) => {
     });
   }
 };
-// Update User
+// Update Products
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -98,7 +75,7 @@ export const updateProduct = async (req, res) => {
     });
   }
 };
-// Delete the User
+// Delete the Product
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;

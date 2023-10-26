@@ -9,3 +9,19 @@
   padding: 0;
   font-family: "Poppins", sans-serif;
 }
+.image-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.group:hover .image-overlay {
+  display: flex;
+}

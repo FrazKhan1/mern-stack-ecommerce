@@ -66,14 +66,14 @@ export const userLogin = async (req, res) => {
     const { userEmail, password } = req.body;
     const user = await User.findOne({ userEmail });
     if (!user) {
-      return res.status(401).send({
+      return res.status(200).send({
         message: "Email is not registered",
         success: false,
       });
     }
     const checkPassword = await bcrypt.compare(password, user.password);
     if (!checkPassword) {
-      return res.status(401).send({
+      return res.status(200).send({
         message: "Password is wrong",
         success: false,
       });
@@ -105,44 +105,38 @@ export const getAllUser = async (req, res) => {
     });
   }
 };
-// Update User
-export const updateUser = async (req, res) => {
+// Get Single User
+export const getSingleUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const {
-      firstName,
-      lastName,
-      userName,
-      userEmail,
-      password,
-      address,
-      phone,
-      profilePicture,
-      isAdmin,
-    } = req.body;
-
-    const response = await User.findByIdAndUpdate(
-      id,
-      {
-        firstName,
-        lastName,
-        userName,
-        userEmail,
-        password,
-        address,
-        phone,
-        profilePicture,
-        isAdmin,
-      },
-      { new: true }
-    );
-
-    if (!response) {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+    if (!user) {
       return res.status(404).send({
         message: "User not found",
         success: false,
       });
     }
+    res.status(200).send({
+      message: "User Data fetch Succesfully",
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+};
+// Update User
+export const updateUser = async (req, res) => {
+  try {
+    console.log("Request Body:", req.body, req.body._id);
+    const response = await User.findOneAndUpdate(
+      { _id: req.body._id },
+      req.body
+    );
+    console.log(response);
 
     res.status(200).send({
       message: "User Data Updated Successfully",
@@ -160,10 +154,8 @@ export const updateUser = async (req, res) => {
 // Delete the User
 export const deleteUser = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const deletedUser = await User.findByIdAndDelete(id);
-
+    const deletedUser = await User.findOneAndDelete({ _id: req.params.id });
+    console.log(req.body._id, deletedUser);
     if (!deletedUser) {
       return res.status(404).send({
         message: "User not found",
@@ -201,7 +193,7 @@ export const forgetPassword = async (req, res) => {
       service: "gmail",
       auth: {
         user: "fraz9838@gmail.com",
-        pass: "sevh kkbq zgvc sofn",
+        pass: "fdcq otbt gohh edfd",
       },
     });
 
@@ -209,7 +201,7 @@ export const forgetPassword = async (req, res) => {
       from: "fraz9838@gmail.com",
       to: userEmail,
       subject: "Reset Your password",
-      html: `<p>Hello ${user?.userName},</p><br/> Your Otp is for reste Password is ${otp}`,
+      html: `<p>Hello ${user?.userName},</p><br/> Your Otp is for reset Password is ${otp}`,
     };
 
     transporter.sendMail(mailOptions);
@@ -219,7 +211,12 @@ export const forgetPassword = async (req, res) => {
       success: true,
       data: user,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
 };
 // verify otp
 export const verifyOtp = async (req, res) => {
@@ -233,20 +230,15 @@ export const verifyOtp = async (req, res) => {
       });
     }
 
-    const otpExpireTime = new Date(user.createdAt.getTime() + 60 * 60 * 1000);
+    // const otpExpireTime = new Date(user.createdAt.getTime() + 60 * 60 * 1000);
 
-    if (otpExpireTime <= new Date()) {
-      return res.status(401).send({
-        message: "Expired Otp",
-        success: false,
-      });
-    }
-    if (otpCode !== user.otpCode) {
-      return res.status(401).send({
-        message: "invalid Otp",
-        success: false,
-      });
-    }
+    // if (otpExpireTime <= new Date()) {
+    //   return res.status(401).send({
+    //     message: "Expired Otp",
+    //     success: false,
+    //   });
+    // }
+
     user.password = newPassword;
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(newPassword, salt);
@@ -265,5 +257,27 @@ export const verifyOtp = async (req, res) => {
       message: "Internal Server Error",
       success: false,
     });
+  }
+};
+// get user info by user id
+export const getUserInfoById = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body._id });
+    if (!user) {
+      return res.status(401).send({
+        message: "User not found",
+        success: false,
+      });
+    } else {
+      return res.status(200).send({
+        message: "Data fetch Succsessfuly",
+        success: true,
+        data: user,
+      });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Error getting user info", success: false });
   }
 };

@@ -13,8 +13,9 @@ const productSchema = new schema(
       required: true,
     },
     productPrice: {
-      type: String,
+      type: Number,
       required: true,
+      min: 0,
     },
     productCategory: {
       type: String,
@@ -27,9 +28,11 @@ const productSchema = new schema(
     productInventory: {
       type: Number,
       required: true,
+      min: 0,
     },
     productRating: {
       type: Number,
+      default: 0, // Example default value
     },
   },
   {

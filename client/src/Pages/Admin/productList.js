@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { GrFormView } from "react-icons/gr";
 import { MdOutlineDeleteSweep } from "react-icons/md";
 import { FiEdit3 } from "react-icons/fi";
+import { toast } from "react-hot-toast";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -18,7 +19,19 @@ const ProductList = () => {
     } catch (error) {}
   };
 
-  const handleDelete = async () => {};
+  const handleDelete = async (productId) => {
+    try {
+      const response = await axios.delete(
+        `/api/product/delete-product/${productId}`
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+        getAllProducts();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleView = async (productId) => {
     try {
       const response = await axios.get(

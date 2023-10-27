@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
 const ProductList = ({ listTitle, products }) => {
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
@@ -13,7 +18,7 @@ const ProductList = ({ listTitle, products }) => {
             <div key={product._id} className="group relative">
               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none lg:h-80">
                 <img
-                  src={product.imageSrc}
+                  src="https://erasmusnation-com.ams3.digitaloceanspaces.com/woocommerce-placeholder.png"
                   alt="Product Image"
                   className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
@@ -32,6 +37,12 @@ const ProductList = ({ listTitle, products }) => {
                   $ {product.productPrice}
                 </p>
               </div>
+              <button
+                onClick={() => addToCart(product)}
+                className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-3 rounded-md cursor-pointer"
+              >
+                Add to Cart
+              </button>
             </div>
           ))}
         </div>

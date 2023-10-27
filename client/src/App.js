@@ -15,6 +15,7 @@ import AdminRoute from "./components/AdminRoute";
 import SingleUserScreen from "./Pages/Admin/singleUserScreen";
 import SingleProductScreen from "./Pages/Admin/singleProductScreen";
 import UpdateSingleProduct from "./Pages/Admin/updateSingleProduct";
+import SingleProduct from "./Pages/ProductPage/singelProductPage";
 
 const App = () => {
   const { loading } = useSelector((state) => state.loader);
@@ -69,6 +70,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/product/view/:id"
+            element={
+              <ProtectedRoute>
+                <SingleProduct />
               </ProtectedRoute>
             }
           />

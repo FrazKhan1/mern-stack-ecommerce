@@ -14,7 +14,10 @@ export const creatCart = async (req, res) => {
     } else {
       for (const newItem of items) {
         const existingItem = cart.items.find((item) => {
-          return item.productId.toString() === newItem.productId;
+          if (item.productId) {
+            return item.productId.toString() === newItem.productId.toString();
+          }
+          return false;
         });
 
         if (existingItem) {
@@ -57,6 +60,34 @@ export const getAllCarts = async (req, res) => {
       message: "Carts retrieved successfully",
       success: true,
       data: carts,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      message: "Internal Server Error",
+      success: false,
+    });
+  }
+};
+
+// get single cart
+
+export const getSingleCart = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const cart = await Cart.findById({ id });
+
+    if (!cart) {
+      return res.status(401).send({
+        message: "Cart not Found",
+        success: false,
+      });
+    }
+
+    res.status(200).send({
+      message: "Carts retrieved successfully",
+      success: true,
+      data: cart,
     });
   } catch (error) {
     console.error(error);

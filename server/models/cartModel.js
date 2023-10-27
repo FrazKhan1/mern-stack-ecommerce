@@ -11,14 +11,20 @@ const cartSchema = new schema(
     },
     items: [
       {
+        productTitle: {
+          type: String,
+          required: true,
+        },
+        productPrice: {
+          type: String,
+          required: true,
+        },
         productId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "products",
-          required: true,
         },
         quantity: {
           type: Number,
-          required: true,
           min: 1,
         },
       },
@@ -27,9 +33,6 @@ const cartSchema = new schema(
       type: String,
       default: "Pending",
     },
-  },
-  {
-    timestamps: true,
   },
   {
     timestamps: true,

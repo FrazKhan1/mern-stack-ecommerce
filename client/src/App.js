@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import { Toaster } from "react-hot-toast";
@@ -16,6 +17,7 @@ import SingleUserScreen from "./Pages/Admin/singleUserScreen";
 import SingleProductScreen from "./Pages/Admin/singleProductScreen";
 import UpdateSingleProduct from "./Pages/Admin/updateSingleProduct";
 import SingleProduct from "./Pages/ProductPage/singelProductPage";
+import CartPage from "./Pages/Cart/cartPage";
 
 const App = () => {
   const { loading } = useSelector((state) => state.loader);
@@ -82,6 +84,14 @@ const App = () => {
             }
           />
           <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <CartPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/login"
             element={
               <PublicRoute>
@@ -123,6 +133,7 @@ const App = () => {
           />
           <Route path="forget-password" element={<ForgetPassword />} />
         </Routes>
+        <Footer />
       </Router>
     </>
   );

@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Wrapper from "./Wrapper";
 import { useDispatch, useSelector } from "react-redux";
-import { FiUser } from "react-icons/fi";
+import { FiUser, FiShoppingCart } from "react-icons/fi";
 import { setUser } from "../redux/userSlice";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
+  const cart = useSelector((state) => state.cart.items);
+  console.log(cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [active, setActive] = useState("Home");
@@ -64,9 +66,16 @@ const Navbar = () => {
             </li>
           )}
           {user && (
-            <Link to={user?.isAdmin ? "/admin-dashboard" : "user-profile"}>
+            <Link to={user?.isAdmin ? "/admin-dashboard" : "/user-profile"}>
               <li className="flex text-white items-center justify-center ml-5 gap-2">
                 <FiUser size={24} /> {user?.userName}
+              </li>
+            </Link>
+          )}
+          {cart && cart.items.length > 0 && (
+            <Link to="/cart">
+              <li className="flex text-white items-center justify-center ml-5 gap-2">
+                <FiShoppingCart size={24} /> {cart?.items.length}
               </li>
             </Link>
           )}

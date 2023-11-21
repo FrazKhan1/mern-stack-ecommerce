@@ -1,14 +1,12 @@
 import { Carousel } from "antd";
 import React, { useEffect, useState } from "react";
-import slider1 from "../../assets/images/slider1.jpg";
-import slider2 from "../../assets/images/slider2.jpg";
-import slider3 from "../../assets/images/slider3.jpg";
 import ProductList from "../../components/ProductList";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Rating from "../../components/Rating";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { setCartData } from "../../redux/cartSlice";
 
 const Home = () => {
   const { user } = useSelector((state) => state.user);
@@ -16,6 +14,7 @@ const Home = () => {
   const [cart, setCart] = useState([]);
   const [singleProduct, setSingleProduct] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   console.log(cart);
   const addToCart = async (product) => {
     try {
@@ -39,9 +38,8 @@ const Home = () => {
         }
       );
       if (response.data.success) {
+        dispatch(setCartData(response.data.data));
         toast.success(response.data.message);
-
-        setCart(response.data.data);
       } else {
         toast.error(response.data.message);
       }
@@ -94,37 +92,31 @@ const Home = () => {
 
   return (
     <div>
-      {/* Carousel */}
-      {/* <Carousel autoplay>
-        <div>
-          <img
-            style={{ width: "100%", height: "1000px" }}
-            src={slider2}
-            alt="Carousel 1"
-          />
-        </div>
-        <div>
-          <img
-            style={{ width: "100%", height: "1000px" }}
-            src={slider3}
-            alt="Carousel 1"
-          />
-        </div>
-        <div>
-          <img
-            style={{ width: "100%", height: "1000px" }}
-            src={slider1}
-            alt="Carousel 1"
-          />
-        </div>
-      </Carousel> */}
+      <div className="header__image">
+        <section className="header__bottom">
+          <p className="header__bottom--new-product overline">NEW PRODUCT</p>
+          <h1 className="header__bottom--title">XX99 Mark II Headphones</h1>
+          <p className="header__bottom--paragraph paragraph">
+            Experience natural, lifelike audio and exceptional build quality
+            made for the passionate music enthusiast.
+          </p>
+          {/* <Link
+            to="/xx99-mark-two-headphones"
+            onClick={() => window.scrollTo(0, 0)}
+            className="header__bottom--btn link-btn"
+          >
+            see product
+          </Link> */}
+        </section>
+      </div>
+
       {/* Product List */}
       <div className="bg-white">
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
           <h2 className="text-2xl font-bold tracking-tight text-gray-900">
             Products
           </h2>
-          F
+
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {productlist.map((product) => (
               <div class="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
@@ -192,6 +184,40 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <section className="footer__best-gear">
+        <picture>
+          <source
+            srcSet={"./assets/shared/desktop/image-best-gear.jpg"}
+            media="(min-width: 769px)"
+          />
+
+          <source
+            srcSet={"./assets/shared/tablet/image-best-gear.jpg"}
+            media="(min-width: 376px)"
+          />
+
+          <img
+            className="footer__best-gear--img"
+            alt="a png of zx7 speaker"
+            src={"./assets/shared/mobile/image-best-gear.jpg"}
+          />
+        </picture>
+        <div className="footer__best-gear--container-bottom">
+          <h2 className="footer__best-gear--title">
+            Bringing you the <span className="color-accent">best</span> audio
+            gear
+          </h2>
+
+          <p className="footer__best-gear--paragraph paragraph">
+            Located at the heart of New York City, Audiophile is the premier
+            store for high end headphones, earphones, speakers, and audio
+            accessories. We have a large showroom and luxury demonstration rooms
+            available for you to browse and experience a wide range of our
+            products. Stop by our store to meet some of the fantastic people who
+            make Audiophile the best place to buy your portable audio equipment.
+          </p>
+        </div>
+      </section>
     </div>
   );
 };
